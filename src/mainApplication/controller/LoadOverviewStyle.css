@@ -1,0 +1,21 @@
+
+
+
+#fancyText{
+	
+	-fx-font:12px Tahoma;
+	-fx-border-radius:5px;
+	-fx-border-color:none;
+  	-fx-border-width:2px;
+  	-fx-padding:5;
+   
+    
+	
+}
+
+.text-area .content{
+	
+	-fx-background-color:linear-gradient(from 25% 25% to 100% 100%,rgb(210,210,210,0.8),rgb(250,250,250,0.8));
+
+	
+}

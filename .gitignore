@@ -1,0 +1,6 @@
+*.class
+
+*.[oa]
+bin.*
+*.prefs
+*.fxbuild

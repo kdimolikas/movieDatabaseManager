@@ -1,0 +1,74 @@
+
+
+#split #left_split{
+	
+	
+	-fx-background-color:linear-gradient(from 0% 50% to 100% 100%, rgb(150,150,150,0.6), rgb(200,200,200,0.5));
+	
+	
+}
+
+/*#split #left_split #grid #exit{
+	
+	-fx-background-color:linear-gradient(from 25% 25% to 100% 100%,rgb(60,60,60,0.6),rgb(250,250,250,0.6));
+	-fx-background-image:url("file:resources/images/exit.png");
+	-fx-background-repeat:no-repeat;
+	-fx-background-size:contain;
+	-fx-background-position:center center;
+	-fx-cursor:hand;
+	
+}
+*/
+
+/*#split #left_split #grid #load{
+	
+	-fx-background-color:linear-gradient(from 25% 25% to 100% 100%,rgb(60,60,60,0.6),rgb(250,250,250,0.6));
+	-fx-background-image:url("file:resources/images/upload.png");
+	-fx-background-repeat:no-repeat;
+	-fx-background-size:contain;
+	-fx-background-position:center center;
+	-fx-cursor:hand;
+	
+}
+*/
+
+/*#split #left_split #grid #search{
+	
+	-fx-background-color:linear-gradient(from 25% 25% to 100% 100%,rgb(60,60,60,0.6),rgb(250,250,250,0.6));
+	-fx-background-image:url("file:resources/images/movie_search.png");
+	-fx-background-repeat:no-repeat;
+	-fx-background-size:contain;
+	-fx-background-position:center center;
+	-fx-cursor:hand;
+	
+}
+*/
+
+/*#split #left_split #grid #adv_search{
+	
+	-fx-background-color:linear-gradient(from 25% 25% to 100% 100%,rgb(60,60,60,0.6),rgb(250,250,250,0.6));
+	-fx-background-image:url("file:resources/images/adv_search.png");
+	-fx-background-repeat:no-repeat;
+	-fx-background-size:contain;
+	-fx-background-position:center center;
+	-fx-cursor:hand;
+	
+}*/
+
+
+#split #right_split .text-area{
+	
+	-fx-font:14px Tahoma;
+	
+	
+	
+}
+
+
+#split #right_split #desc .content{
+	
+
+	-fx-background-color:linear-gradient(from 25% 25% to 100% 100%,rgb(250,250,250,0.5),rgb(230,230,230,0.5));
+	
+	
+}

@@ -1,0 +1,13 @@
+/ISearchManager.class
+/SearchEngine.class
+/SearchEngineFactory.class
+/SearchMovieDescriptionById.class
+/SearchMovieDescriptionByTitle.class
+/SearchMoviesByActor.class
+/SearchMoviesByCountry.class
+/SearchMoviesByDirector.class
+/SearchMoviesByGenre.class
+/SearchRatingsByMovieId.class
+/SearchRatingsByMovieTitle.class
+/SearchTagsByMovieId.class
+/SearchTagsByMovieTitle.class

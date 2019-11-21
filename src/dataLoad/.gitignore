@@ -1,0 +1,16 @@
+/AbstractRecordLoader.class
+/CountryLoader.class
+/DataLoader.class
+/DataLoaderFactory.class
+/DataProvider.class
+/DataProviderFactory.class
+/GenreLoader.class
+/IDataProvider.class
+/ILoaderManager.class
+/LoaderFactory.class
+/LocationLoader.class
+/MovieLoader.class
+/Parser.class
+/PersonLoader.class
+/RatingLoader.class
+/TagLoader.class
