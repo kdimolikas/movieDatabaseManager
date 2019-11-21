@@ -11,10 +11,11 @@ Users can perform the following actions:
 ## Examples
 * Load data
 
-[!Load data](./resources/images/loadData.png)
+<img src="/resources/images/loadData.png" alt="Load data">
 
 * Search for a movie
-[!Search a movie](./resources/images/searchMovie.png)
+
+<img src="/resources/images/searchMovie.png" alt="Search a movie">
 
 *: Archives include:
 
