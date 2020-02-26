@@ -1,6 +1,6 @@
 *.class
-
 *.[oa]
-bin.*
+bin/.*
 *.prefs
 *.fxbuild
+/.classpath
