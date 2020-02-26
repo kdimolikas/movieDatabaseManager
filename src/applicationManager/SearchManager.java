@@ -1,7 +1,7 @@
 package applicationManager;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 import search.ISearchManager;
 
@@ -19,7 +19,7 @@ public class SearchManager {
 	
 	private ISearchManager answerReceiver;
 	private SearchEngineFactory sFactory;
-	private ArrayList<String> answer;
+	private List<String> answer;
 	private int retrievedItems;
 	private long elapsedTime;
 	
@@ -34,7 +34,7 @@ public class SearchManager {
 	}
 	
 	
-	public ArrayList<String> getAnswer(){return answer;}
+	public List<String> getAnswer(){return answer;}
 
 
 	public int searchMovieDesc(String searchKey, int criterion) {
@@ -101,38 +101,6 @@ public class SearchManager {
 		
 	}
 	
-	
-	
-	public int searchMovieTagsRatings(String searchKey, int criterion) {
-		
-		long startTime = System.currentTimeMillis();
-		long endTime;
-		
-		
-		answerReceiver = sFactory.createSearchEngineForTagsRatings(criterion);
-		
-		if (!answerReceiver.equals(null)) {
-			answer = answerReceiver.searchFor(searchKey);
-			endTime = System.currentTimeMillis();
-			this.elapsedTime = endTime - startTime;
-			this.retrievedItems = answerReceiver.getItemsNum(); 
-
-		}else {
-			System.err.println("Search process failed.");
-			System.exit(0);
-		}
-		
-		
-		if (!answer.isEmpty())
-			showSearchResults();
-		else
-			System.out.println("Movie tags not found.");
-		
-		return this.retrievedItems;
-		
-	}
-	
-
 	private void showSearchResults() {
 
 
@@ -143,7 +111,6 @@ public class SearchManager {
 			System.out.println("Number of items retrieved: "+ this.retrievedItems);
 			System.out.println("Time elapsed (in ms): "+ this.elapsedTime);
 			System.out.println("--------------------------------------------------------------------------------------");
-
 
 		}else
 			System.out.println("No results available.");

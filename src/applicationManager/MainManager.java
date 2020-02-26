@@ -58,31 +58,6 @@ public class MainManager implements IMainApplication {
 	}
 	
 
-	@Override
-	public int loadTagRatingsData(int option) {
-		
-		int temp = -1;
-		long startTime = System.currentTimeMillis();
-		long endTime;
-		long elapsedTime;
-
-		temp = lManager.loadTagRatingsData(option);
-		endTime = System.currentTimeMillis();
-		elapsedTime = (endTime - startTime)/1000;
-		
-		if (temp>0) {
-			
-			System.out.println("---------------------------------------------------------------");
-			System.out.println("Number of objects created: "+ temp);
-			System.out.println("Time elapsed (in s): "+ elapsedTime);
-			System.out.println("---------------------------------------------------------------");
-		}
-		
-		return temp;
-		
-	}
-
-
 	/**
 	 * Responsible for calling the proper method of {@link applicationManager.SearchManager} class.
 	 * @param qType type of question (1: movie description, 2:searching by criteria, 3: searching tags/ratings).
@@ -106,13 +81,7 @@ public class MainManager implements IMainApplication {
 
 
 		}
-
-		else if (qType == 3) {
-
-			searchStatus = sManager.searchMovieTagsRatings(data, cType);
-
-
-		}else {
+		else {
 
 			throw new IllegalArgumentException("Invalid argument in submitQuery(int,int,String) method.");
 			
@@ -122,9 +91,6 @@ public class MainManager implements IMainApplication {
 			
 	}
 
-
-	
-	
 	@Override
 	public HashMap<String,Integer> getFileInfo(){
 		

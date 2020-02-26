@@ -31,19 +31,7 @@ public class LoaderManager {
 		
 	
 		return temp;
-	}
-	
-	
-	public int loadTagRatingsData(int option) {
-		
-		int temp = -1;
-		
-		temp = loader.loadTagsRatings(option);
-		
-		
-		return temp;
-	}
-	
+	}	
 	
 	public HashMap<String,Integer> getFileInfo(){
 		
