@@ -1,7 +1,10 @@
 package dataLoad;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 
 import dataModel.Country;
 import dataModel.Genre;
@@ -12,15 +15,15 @@ import dataModel.TagsRatings;
 
 /**
  * Providing answers to questions submitted by the user. 
- * @since 2017-11-21
+ * @since 2017-11-21 | revised on 2020-02-25
  * @version 1.0
- *
  */
-
 public class DataProvider implements IDataProvider {
 
-	DataLoaderFactory dLoaderFactory;
-	ILoaderManager dLoader;
+	private static DataProvider instance = null;
+	
+	private DataLoaderFactory dLoaderFactory;
+	private ILoaderManager dLoader;
 	private TreeMap<String, Movie> movies = new TreeMap<String, Movie>();
 	private TreeMap<String, Person> actors = new TreeMap<String, Person>();
 	private TreeMap<String, Person> directors = new TreeMap<String, Person>();
@@ -28,24 +31,49 @@ public class DataProvider implements IDataProvider {
 	private TreeMap<String, Country> countries = new TreeMap<String, Country>();
 	private int itemsNum;
 	
-	
-	public DataProvider() {
-		
+	protected DataProvider() {	
 		dLoaderFactory = new DataLoaderFactory();
-		dLoader = dLoaderFactory.createDataLoader();
-			
+		dLoader = dLoaderFactory.createDataLoader();			
 		movies = dLoader.getMovies();
 		actors = dLoader.getActors();
 		directors = dLoader.getDirectors();
 		genres = dLoader.getGenres();
 		countries = dLoader.getCountries();
 		itemsNum = 0;
-		
+	}
+	
+	/**
+	 * Used ONLY for testing
+	 * @param lManager
+	 */
+	protected DataProvider(ILoaderManager lManager) {		
+		dLoader = lManager;			
+		movies = dLoader.getMovies();
+		actors = dLoader.getActors();
+		directors = dLoader.getDirectors();
+		genres = dLoader.getGenres();
+		countries = dLoader.getCountries();
+		itemsNum = 0;
+	}
+	
+	public static DataProvider getInstance() {
+		if (instance == null) {
+			instance = new DataProvider();
+		}
+		return instance;
+	}
+	
+	public static DataProvider getInstance(ILoaderManager lManager) {
+		if (instance == null) {
+			instance = new DataProvider(lManager);
+		}
+		return instance;
 	}
 	
 	@Override
-	public int getItemsNum() {return itemsNum;}
-	
+	public int getItemsNum() {
+		return itemsNum;
+	}
 	
 	@Override
 	public ArrayList<String> getDetailedDescription(String key) {
@@ -53,7 +81,6 @@ public class DataProvider implements IDataProvider {
 		ArrayList<String> list = new  ArrayList<String>();
 		Movie m = new Movie();
 		
-
 		m = getMovieWithId(key);
 		
 		if (m!=null) {
@@ -61,23 +88,22 @@ public class DataProvider implements IDataProvider {
 			list = m.getDetailedDescription();
 		}else
 			this.itemsNum = 0;
-
-		
+	
 		return list;
 	}
 
 	@Override
 	public String getMovieTitleWithId(String id) {
 		
+		@SuppressWarnings("unused")
 		Movie m = new Movie();
 		try {
 			m =  getMovieWithId(id);
-			return m.getMovieTitle();
+			return movies.get(id).getMovieTitle();
 		}catch (NullPointerException e) {
+			e.printStackTrace();
 			return "No movie with the given id.";
-		}
-		
-		
+		}	
 	}
 
 	@Override
@@ -89,7 +115,6 @@ public class DataProvider implements IDataProvider {
 			return m.getMovieTitle();
 		}catch (NullPointerException e) {
 			return "No movie with the given title.";
-			
 		}
 	}
 	
@@ -131,10 +156,8 @@ public class DataProvider implements IDataProvider {
 		return p.getPersonName();
 		
 		}catch (NullPointerException e) {
-			
 			return "No person with the given name.";
 		}
-		
 	}
 	
 	
@@ -154,7 +177,6 @@ public class DataProvider implements IDataProvider {
 			return new ArrayList<String>();
 	}
 	
-	
 	@Override
 	public ArrayList<String> getShortDescriptionByCountry(String countryName) {
 		
@@ -172,7 +194,6 @@ public class DataProvider implements IDataProvider {
 		
 	}
 	
-	
 	@Override
 	public ArrayList<String> getShortDescriptionByDirector(String directorName) {
 		
@@ -188,9 +209,7 @@ public class DataProvider implements IDataProvider {
 			return getShortDescription(movies);
 		}else
 			return new ArrayList<String>();
-		
 	}
-	
 	
 	@Override
 	public ArrayList<String> getShortDescriptionByActor(String actorName) {
@@ -205,11 +224,10 @@ public class DataProvider implements IDataProvider {
 		if (p != null) {
 			movies = p.getMovies();
 			return getShortDescription(movies);
-		}else
+		}else {
 			return new ArrayList<String>();
-		
+		}
 	}
-	
 	
 	@Override
 	public ArrayList<String> getMovieTags(String key){
@@ -217,35 +235,34 @@ public class DataProvider implements IDataProvider {
 		ArrayList<String> list = new  ArrayList<String>();
 		Movie m = new Movie();
 		
-	
 		m = getMovieWithId(key);
 		
 		if (m!=null)
 			list = getTagDescription(m);
 		
-		return list;
-		
-		
+		return list;	
 	}
-	
-
-	
-	public Movie getMovieWithId(String id){return movies.get(id);}
-	
-	
-	
-	public Movie getMovieWithTitle(String aTitle) {
 		
-		Movie m =null;
-		m = movies.values().stream()
-				 .filter(w -> w.getMovieTitle().equalsIgnoreCase(aTitle))
+	private Movie getMovieWithId(String id){
+		return movies.get(id);
+	}
+		
+	private Movie getMovieWithTitle(String aTitle) {
+		
+		Movie m = null;
+		Predicate<Movie> pred = i -> i.getMovieTitle().equalsIgnoreCase(aTitle.trim());
+		
+		try {
+			m = movies.values().stream()
+				 .filter(pred)
 				 .findAny()
-				 .orElse(null);
-		
-		return m;
-		
+				 .orElse(m);
+		}catch(NullPointerException ex) {
+			System.err.println("Movie with the given title not found");
+			ex.printStackTrace();
+		}
+		return m;	
 	}
-	
 	
 	public ArrayList<String> getShortDescription(ArrayList<Movie> mList){
 		
@@ -261,7 +278,6 @@ public class DataProvider implements IDataProvider {
 		return list;
 		
 	}
-
 
 	public ArrayList<String> getTagDescription(Movie m){
 		
@@ -286,10 +302,8 @@ public class DataProvider implements IDataProvider {
 		list.add("Number of unique tags retrieved: "+tags.size());
 		list.add("-------------------------------------------");
 		
-		return list;
-		
+		return list;		
 	}
-
 
 	@Override
 	public ArrayList<String> getMovieRatings(String key) {
@@ -297,15 +311,12 @@ public class DataProvider implements IDataProvider {
 		ArrayList<String> list = new  ArrayList<String>();
 		Movie m = new Movie();
 		
-		
 		m = getMovieWithId(key);
 		if (m!=null)
 			list = getRatingDescription(m);
 		
 		return list;
 	}
-	
-	
 	
 	public ArrayList<String> getRatingDescription(Movie m){
 		
@@ -330,8 +341,63 @@ public class DataProvider implements IDataProvider {
 		list.add("Number of unique ratings retrieved: "+ratings.size());
 		list.add("-------------------------------------------");
 		
-		return list;
-		
+		return list;	
 	}
 
+	@Override
+	public String getMoviePicUrl(String movieTitle) {
+		
+		String picUrl = null;
+		
+		try {
+			picUrl = this.getMovieWithTitle(movieTitle).getPicUrl();
+		}
+		catch(NullPointerException ex) {
+			ex.printStackTrace();
+		}
+		
+		return picUrl;
+	}
+	
+	@Override
+	public List<String> getGenres(){
+		List<String> grs = new ArrayList<String>();
+		this.genres.values().forEach(g->
+									grs.add(g.getGenreName())
+									);
+		Collections.sort(grs);
+		return grs;
+	}
+	
+	@Override
+	public List<String> getCountries(){
+		List<String> crs = new ArrayList<String>();
+		this.countries.values().forEach(c ->
+									crs.add(c.getCountryName())
+									);
+		Collections.sort(crs);
+		return crs;
+	}
+
+	@Override
+	public List<String> getActors() {
+		List<String> ars = new ArrayList<String>();
+		this.actors.values().forEach(a -> {
+									if (a.getPersonName().length() > 0) {
+										ars.add(a.getPersonName());
+									}
+									});
+		return ars;
+	}
+	
+	@Override
+	public List<String> getDirectors() {
+		List<String> drs = new ArrayList<String>();
+		this.directors.values().forEach(d -> {
+									if (d.getPersonName().length() > 0) {
+										drs.add(d.getPersonName());
+									}
+									});
+		return drs;
+	}
 }

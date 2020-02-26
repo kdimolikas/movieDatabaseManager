@@ -1,0 +1,31 @@
+AnchorPane{
+	-fx-background-color: rgba(240,240,240,0.8);
+	background-color: rgba(240,240,240,0.8);
+}
+
+#answerView{
+	-fx-font-size:11px;
+	font-size:11px;
+	-fx-padding:10px;
+	padding:10px;
+	-fx-background-color:rgba(200,200,200,0.5);
+	background-color:rgba(200,200,200,0.5);
+	-fx-text-alignment:justify
+}
+
+RadioButton{
+	-fx-font-size:11px;
+	font-size:11px;
+}
+
+ComboBox{
+	-fx-font-size:11px;
+	font-size:11px;
+}
+
+#searchTitle{
+	-fx-font:12px Tahoma;
+	font:12px Tahoma;
+	-fx-text-alignment:center;
+	-fx-text-fill:rgb(0,0,255);
+}

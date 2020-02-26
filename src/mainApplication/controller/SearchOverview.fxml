@@ -21,128 +21,145 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.control.ComboBox?>
 
-<AnchorPane focusTraversable="true" prefHeight="500.0" prefWidth="595.0" style="-fx-background-color: rgb(230,230,230);;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainApplication.controller.SearchOverviewController">
+<AnchorPane focusTraversable="true" prefWidth="600.0" 
+	stylesheets="@SearchOverviewStyle.css"
+	xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="mainApplication.controller.SearchOverviewController">
    <children>
-      <AnchorPane prefHeight="120.0" prefWidth="595.0">
-         <children>
-            <Button mnemonicParsing="false" onAction="#handleSearchBtnClick" 
-            		opacity="0.9" prefHeight="30.0" prefWidth="61.0" text="Go"
-            AnchorPane.leftAnchor="534.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-               <effect>
-                  <Blend opacity="0.51" />
-               </effect>
-            </Button>
-            <TextField fx:id="searchKey" prefHeight="28.0" prefWidth="170.0" 
-            		   promptText="Search for..." AnchorPane.leftAnchor="350.0" AnchorPane.topAnchor="5.0" />
-            <HBox fx:id="radioBox" layoutX="117.0" layoutY="7.0" prefHeight="28.0" 
-            	  prefWidth="147.0" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="5.0">
-               <children>
-                  <RadioButton fx:id="idBtn" mnemonicParsing="false" selected="true" text="By Id">
-                     <effect>
-                        <Blend />
-                     </effect>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="RadioGroup" />
-                     </toggleGroup>
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </RadioButton>
-                  <RadioButton fx:id="nameBtn" mnemonicParsing="false" text="By Name" toggleGroup="$RadioGroup">
-                     <effect>
-                        <Blend />
-                     </effect>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <HBox.margin>
-                        <Insets left="25.0" top="5.0" />
-                     </HBox.margin>
-                  </RadioButton>
-               </children>
-            </HBox>
-            <MenuButton fx:id="menuBtn" mnemonicParsing="false" text="Search"
-            			AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="5.0">
-              <items>
-                  <Menu fx:id="criteriaMenu" mnemonicParsing="false" text="By Criteria">
-                    <items>
-                      <MenuItem id="genre" mnemonicParsing="false" text="Genre" />
-                        <MenuItem id="actor" mnemonicParsing="false" text="Actor" />
-                        <MenuItem id="director" mnemonicParsing="false" text="Director" />
-                        <MenuItem id="country" mnemonicParsing="false" text="Country" />
-                    </items>
-                  </Menu>
-              </items>
-            </MenuButton>
-            <VBox layoutX="91.0" prefHeight="39.0" prefWidth="76.0">
-               <children>
-                  <Label fx:id="searchCriterion" prefHeight="25.0" prefWidth="68.0" />
-                  <Label fx:id="searchCriterion2" prefHeight="17.0" prefWidth="79.0" />
-               </children>
-            </VBox>
-            <HBox fx:id="ratingsBox" prefHeight="40.0" prefWidth="600.0" 
-            	  AnchorPane.bottomAnchor="0.0" style="-fx-background-color: rgba(150,0,0,0.0);">
-            	<children>
-            		<Canvas fx:id="audienceRatingsCanvas">
-            			<HBox.margin>
-            				<Insets top="0.0" right="0.0"></Insets>
-            			</HBox.margin>
-            		</Canvas>
-            	</children>
-            </HBox>
-         </children>
-      </AnchorPane>
-      <SplitPane dividerPositions="0.4" layoutX="-2.0" layoutY="100.0"
-      			 prefHeight="100.0" prefWidth="595.0" AnchorPane.bottomAnchor="9.0" AnchorPane.topAnchor="120.0">
-        <items>
-            <StackPane prefHeight="245.0" prefWidth="220.0">
-               <children>
-            	 <ImageView fx:id="moviePic" fitHeight="245.0" fitWidth="200.0" pickOnBounds="true" />
-               </children>
-            </StackPane>
-            <VBox focusTraversable="true" prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <ListView fx:id="answerView" prefWidth="366.0">
-                     <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </VBox.margin>
-                  </ListView>
-                  <HBox fillHeight="false" prefHeight="33.0" prefWidth="335.0">
-                     <children>
-                        <Label fx:id="statusLabel" minHeight="-Infinity" prefHeight="17.0"
-                        	   prefWidth="344.0" style="-fx-background-color: rgba(150,150,150,0.5);" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets bottom="2.0" left="5.0" top="2.0" />
-                           </HBox.margin>
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-        </items>
-      </SplitPane>
+   		<VBox prefWidth="590.0">
+   			<children>
+   				<HBox spacing="15.0" prefWidth="595.0">
+   					<padding>
+   						<Insets top="10.0" left="20.0"/>
+   					</padding>
+   					<children>
+   						<HBox fx:id="radioBox" spacing="5.0">
+               				<children>
+				                  <RadioButton fx:id="idRadio" mnemonicParsing="false" selected="true" text="Id">
+				                     <effect>
+				                        <Blend />
+				                     </effect>
+				                     <toggleGroup>
+				                        <ToggleGroup fx:id="radioGroup" />
+				                     </toggleGroup>
+									<cursor>
+				                        <Cursor fx:constant="HAND" />
+				                     </cursor>
+				                  </RadioButton>
+				                  <RadioButton fx:id="nameRadio" mnemonicParsing="false" text="Name" toggleGroup="$radioGroup">
+				                     <effect>
+				                        <Blend />
+				                     </effect>
+				                     <cursor>
+				                        <Cursor fx:constant="HAND" />
+				                     </cursor>
+				                  </RadioButton>
+				                  <RadioButton fx:id="actorRadio" mnemonicParsing="false" text="Actor" toggleGroup="$radioGroup">
+				                     <effect>
+				                        <Blend />
+				                     </effect>
+				                     <cursor>
+				                        <Cursor fx:constant="HAND" />
+				                     </cursor>
+				                  </RadioButton>
+				                  <RadioButton fx:id="directorRadio" mnemonicParsing="false" text="Director" toggleGroup="$radioGroup">
+				                     <effect>
+				                        <Blend />
+				                     </effect>
+				                     <cursor>
+				                        <Cursor fx:constant="HAND" />
+				                     </cursor>
+				                  </RadioButton>
+				                  <RadioButton fx:id="countryRadio" mnemonicParsing="false" text="Country" toggleGroup="$radioGroup">
+				                     <effect>
+				                        <Blend />
+				                     </effect>
+				                     <cursor>
+				                        <Cursor fx:constant="HAND" />
+				                     </cursor>
+				                  </RadioButton>
+				                  <RadioButton fx:id="genreRadio" mnemonicParsing="false" text="Genre" toggleGroup="$radioGroup">
+				                     <effect>
+				                        <Blend />
+				                     </effect>
+				                     <cursor>
+				                        <Cursor fx:constant="HAND" />
+				                     </cursor>
+				                  </RadioButton>
+				               </children>
+            			</HBox>
+            			<HBox spacing="5.0">
+            				<children>
+            					<TextField fx:id="searchKey" prefWidth="150.0" promptText="Search for..."/>
+   								<Button mnemonicParsing="false" onAction="#handleSearchBtnClick" 
+            						opacity="0.9" prefWidth="61.0" text="Go">
+               						<effect>
+		                  				<Blend opacity="0.5" />
+             		  				</effect>
+            					</Button>
+            				</children>
+            			</HBox>
+   					</children>
+   				</HBox>
+				<HBox prefWidth="600.0" spacing="80.0">
+					<padding>
+						<Insets left="20.0"/>
+					</padding>
+            		<children>
+            			<VBox>
+            				<Label text="Actor:" />
+            				<ComboBox fx:id="actors" promptText="Enter actor's name" editable="true" disable="true"/>
+            			</VBox>
+            			<VBox>
+            				<Label text="Director:" />
+            				<ComboBox fx:id="directors" promptText="Enter director's name" editable="true" disable="true"/>
+            			</VBox>
+            		</children>
+            	</HBox>
+            	<HBox prefWidth="600.0" spacing="140.0">
+            		<padding>
+						<Insets left="20.0"/>
+					</padding>
+            		<children>
+            			<VBox>
+            				<Label text="Country:" />
+            				<ComboBox fx:id="countries" promptText="Select country" disable="true"/>
+            			</VBox>
+            			<VBox>
+            				<Label text="Genre:" />
+            				<ComboBox fx:id="genres" promptText="Select genre" disable="true"/>
+            			</VBox>
+            		</children>
+            	</HBox>
+       			<Label fx:id="searchTitle" alignment="CENTER" prefHeight="25.0" prefWidth="600.0"/>
+            	<HBox fx:id="ratingsBox" prefWidth="600.0">
+            		<children>
+            			<Canvas fx:id="audienceRatingsCanvas">
+            				<HBox.margin>
+            					<Insets right="20.0"></Insets>
+            				</HBox.margin>
+            			</Canvas>
+            		</children>
+            	</HBox>
+            	<SplitPane dividerPositions="0.4" maxHeight="200.0">
+        			<items>
+       	 				<ImageView fx:id="moviePic" fitWidth="200.0" fitHeight="200.0"
+            	 					 pickOnBounds="true" preserveRatio="true"/>
 
-      <HBox fillHeight="false" layoutY="38.0" maxHeight="-Infinity" minHeight="-Infinity" 
-      		prefHeight="20.0" prefWidth="595.0" style="-fx-background-color: rgb(200,200,200,0.7);" 
-      		AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
-         <children>
-            <Label fx:id="searchTitle" alignment="CENTER" prefHeight="25.0" prefWidth="377.0" 
-            	   style="-fx-background-color: rgb(200,200,200);" textAlignment="CENTER" textFill="#5d64cf">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="100.0" />
-               </HBox.margin>
-            </Label>
-         </children>
-      </HBox>
+            			<VBox focusTraversable="true" prefWidth="100.0">
+               				<children>
+                  				<ListView fx:id="answerView" prefWidth="366.0">
+                     				<VBox.margin>
+                        				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     				</VBox.margin>
+                  				</ListView>
+               				</children>
+            			</VBox>
+        			</items>
+      			</SplitPane>
+   			</children>
+		</VBox>    
    </children>
 </AnchorPane>
