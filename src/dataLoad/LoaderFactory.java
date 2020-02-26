@@ -28,10 +28,6 @@ public class LoaderFactory {
 				return new CountryLoader();
 			else if(loaderType.equals("Location"))
 				return new LocationLoader();
-			else if(loaderType.equals("Tag"))
-				return new TagLoader();
-			else if(loaderType.equals("Rating"))
-				return new RatingLoader();
 			else {
 				throw new IllegalArgumentException("\""+loaderType+"\":"+"Invalid argument to create Loader.");
 			}
