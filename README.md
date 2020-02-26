@@ -13,9 +13,17 @@ Users can perform the following actions:
 
 <img src="/resources/images/loadData.png" alt="Load data">
 
-* Search for a movie
+* Search a movie by it's name
 
-<img src="/resources/images/searchMovie.png" alt="Search a movie">
+<img src="/resources/images/searchByName.png" alt="Search a movie">
+
+* Search a director's movies
+
+<img src="/resources/images/searchByDirector.png" alt="Search  by director">
+
+* Search movies of a genre
+
+<img src="/resources/images/searchByGenre.png" alt="Search by genre">
 
 *: Archives include:
 
