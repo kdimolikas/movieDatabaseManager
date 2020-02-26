@@ -16,17 +16,11 @@ import search.SearchMoviesByActor;
 import search.SearchMoviesByCountry;
 import search.SearchMoviesByDirector;
 import search.SearchMoviesByGenre;
-import search.SearchRatingsByMovieId;
-import search.SearchRatingsByMovieTitle;
-import search.SearchTagsByMovieId;
-import search.SearchTagsByMovieTitle;
 
 /**
  * Testing {@link search.SearchEngineFactory} class.
- * 
  * @since 2017-11-20
  * @version 1.0
- *
  */
 public class SearchEngineFactoryTest {
 
@@ -91,27 +85,4 @@ public class SearchEngineFactoryTest {
 		assertNull(factoryToTest.createSearchEngine("wrong argument"));
 		
 	}
-
-	/**
-	 * Test method for {@link search.SearchEngineFactory#createSearchEngineForTagsRatings(int)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testCreateSearchEngineForTagsRatings() {
-		
-		SearchEngine searchTagsRatings = factoryToTest.createSearchEngineForTagsRatings(1);
-		assertTrue(searchTagsRatings instanceof SearchTagsByMovieId);
-		
-		searchTagsRatings = factoryToTest.createSearchEngineForTagsRatings(2);
-		assertTrue(searchTagsRatings instanceof SearchTagsByMovieTitle);
-		
-		searchTagsRatings = factoryToTest.createSearchEngineForTagsRatings(3);
-		assertTrue(searchTagsRatings instanceof SearchRatingsByMovieId);
-		
-		searchTagsRatings = factoryToTest.createSearchEngineForTagsRatings(4);
-		assertTrue(searchTagsRatings instanceof SearchRatingsByMovieTitle);
-		
-		assertNull(factoryToTest.createSearchEngineForTagsRatings(5));
-		
-	}
-
 }

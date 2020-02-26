@@ -14,8 +14,6 @@ import dataLoad.LoaderFactory;
 import dataLoad.LocationLoader;
 import dataLoad.MovieLoader;
 import dataLoad.PersonLoader;
-import dataLoad.RatingLoader;
-import dataLoad.TagLoader;
 
 /**
  * 
@@ -72,13 +70,7 @@ public class LoaderFactoryTest {
 		
 		loader = factoryToTest.createLoader("Location");
 		assertTrue(loader instanceof LocationLoader);
-		
-		loader = factoryToTest.createLoader("Tag");
-		assertTrue(loader instanceof TagLoader);
-		
-		loader = factoryToTest.createLoader("Rating");
-		assertTrue(loader instanceof RatingLoader);
-		
+				
 		loader = factoryToTest.createLoader("wrong argument");
 		assertEquals(loader,null);
 				

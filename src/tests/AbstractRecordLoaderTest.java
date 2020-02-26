@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.TreeMap;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -16,14 +15,12 @@ import dataLoad.GenreLoader;
 import dataLoad.LocationLoader;
 import dataLoad.MovieLoader;
 import dataLoad.PersonLoader;
-import dataLoad.RatingLoader;
-import dataLoad.TagLoader;
+
 import dataModel.Country;
 import dataModel.Genre;
 import dataModel.Location;
 import dataModel.Movie;
 import dataModel.Person;
-import dataModel.TagsRatings;
 
 /**
  * Testing {@link dataLoad.AbstractRecordLoader} and its {@link dataLoad.AbstractRecordLoader#load(String, String, boolean, int, TreeMap, boolean)} method.
@@ -40,10 +37,6 @@ public class AbstractRecordLoaderTest {
 	private CountryLoader countryLoader;
 	private GenreLoader genreLoader;
 	private LocationLoader locationLoader;
-	private TagLoader tagLoader;
-	private RatingLoader ratingLoader;
-	
-
 
 	@Before
 	public void setUp() throws Exception {
@@ -53,9 +46,6 @@ public class AbstractRecordLoaderTest {
 		countryLoader = new CountryLoader();
 		genreLoader = new GenreLoader();
 		locationLoader = new LocationLoader();
-		tagLoader = new TagLoader();
-		ratingLoader = new RatingLoader();
-		
 	}
 
 	
@@ -88,21 +78,7 @@ public class AbstractRecordLoaderTest {
 	public void testLocationLoaderNotNull() {
 		assertNotNull("After the setup, locationLoader is not null", locationLoader);
 	}
-	
-	
-	@Ignore
-	public void testTagLoaderNotNull() {
-		assertNotNull("After the setup, tagLoader is not null", tagLoader);
-	}
-	
-	
-	@Ignore
-	public void testRatingLoaderNotNull() {
-		assertNotNull("After the setup, ratingLoader is not null", ratingLoader);
-	}
-
-	
-	
+		
 	@Test
 	public void testMovieLoaderRecords() throws IOException {
 		
@@ -113,9 +89,7 @@ public class AbstractRecordLoaderTest {
 		assertNotEquals(0,movieLoader.load(movieFile, "\t", true, 21, movies, true));
 		assertEquals(9730,movies.size());
 		assertEquals(9730,movieLoader.load(movieFile, "\t", true, 21, movies, true));
-		
-		
-		
+
 	}
 	
 	
@@ -195,35 +169,5 @@ public class AbstractRecordLoaderTest {
 		
 		
 	}
-	
-	
-	@Test
-	public void testTagLoaderRecords() throws IOException {
-		
-		String tagFile = "input/user_taggedmovies.dat";
-		
-		TreeMap<String, TagsRatings> tags = new TreeMap<String, TagsRatings>();
-		
-		assertNotEquals(0,tagLoader.load(tagFile, "\t", true,9, tags, true));
-		
-		assertEquals(9079,tags.size());
-		assertEquals(9079,tagLoader.load(tagFile, "\t", true,9, tags, true));
-		
-		
-	}
-	
-	
-	@Test
-	public void testRatingLoaderRecords() throws IOException {
-		
-		String ratingFile = "input/user_ratedmovies.dat";
-		
-		TreeMap<String, TagsRatings> ratings = new TreeMap<String, TagsRatings>();
-		
-		assertEquals(10,ratingLoader.load(ratingFile, "\t", true,9, ratings, true));
-		assertEquals(10,ratings.size());
-		
-	}
-	
 
 }
