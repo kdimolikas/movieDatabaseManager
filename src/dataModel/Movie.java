@@ -9,9 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-import dataModel.Person;
-
+/**
+ * Models a Movie
+ * @since 2020-02
+ * @version 1.0
+ * @author KD
+ */
 public class Movie {
+	
+	private static final String NO_IMAGE = "file:resources/images/noimage.jpg";
 	
 	private String id;
 	private String title;
@@ -28,7 +34,6 @@ public class Movie {
 	private HashMap<String,String> imdbUrlPic;
 	private HashMap<String,String> rtUrlPic;
 	private Country country;
-	
 
 	public Movie() {}
 	
@@ -59,8 +64,6 @@ public class Movie {
 	public void addLocation(Location l) {locations.add(l);}
 	
 	public void addTag(Tag t) {tags.add(t);}
-
-	public void addRating(Rating r) {ratings.add(r);}
 	
 	public void setDirector(Person d) {director = d;}
 	
@@ -69,42 +72,25 @@ public class Movie {
 	public void setGenres(ArrayList<Genre> aList){ genres = aList;}
 	
 	public void setPicUrl(String sourceId, String aUrl, int isImdb) {
-		
-		
 		if (isImdb == 1) {
-		
 				imdbUrlPic.put(sourceId,aUrl);
-		
 		}else if (isImdb == 0) {
-			
-				rtUrlPic.put(sourceId,aUrl);
-		
-				
+				rtUrlPic.put(sourceId,aUrl);				
 		}else
 			System.out.println("Invalid value for source argument.");
-	
 	}
-	
-	
 
-	
 	public String getPicUrl(){
-		
-		String pic = "No image available.";
-		
+		String pic = NO_IMAGE;
 		pic = imdbUrlPic.values().stream().findFirst().get();
 		if (!exists(pic)) {
 			pic = rtUrlPic.values().stream().findFirst().get();
 			if (!exists(pic))
-				pic = "https://www.google.gr/search?dcr=0&biw=1464&bih=938&tbm=isch&sa=1&ei=GK8dWrifFcigUfzMg7gO&q=sorry+no+image+available+pic&oq=sorry+no+image+available+pic&gs_l=psy-ab.3...23777.24927.0.25185.6.6.0.0.0.0.241.1062.0j5j1.6.0....0...1c.1.64.psy-ab..0.1.240...0i19k1.0.Sh923RMmUys#imgrc=jkztXSfyexY-9M:";
+				pic = NO_IMAGE;
 		}
-		
-	return pic; 
-			
+		return pic; 	
 	}
-	
-	
-	
+
 	/**
 	 * Checks if the given url exists
 	 * @param a string corresponding to a url
@@ -135,8 +121,6 @@ public class Movie {
 			return true;
 		
 		return false;
-		
-		
 	}
 	
 
@@ -144,13 +128,10 @@ public class Movie {
 
 	
 	public String getMovieTitle() {
-		
-	if (title.equals(null))
-		title = "No available title.";
-		
+		if (title == null) {
+			title = "No available title.";
+		}
 		return title;
-		
-	
 	}
 
 
@@ -163,8 +144,6 @@ public class Movie {
 	public ArrayList<TagsRatings> getRatings(){return ratings;}
 
 	public String getCriticsRatings() {return allCriticsRating;}
-	
-	
 	
 	public ArrayList<String> getDetailedDescription() {
 		
@@ -192,10 +171,7 @@ public class Movie {
 		//desc.add("----------------------------------------------------------------------");
 		
 		return desc;
-		
-	
 	}
-	
 	
 	public ArrayList<String> getShortDescription() {
 		
@@ -207,9 +183,5 @@ public class Movie {
 		//desc.add("---------------------------------------------------------------------");
 	
 		return desc;
-		
-	
 	}
-
-
 }

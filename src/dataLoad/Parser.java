@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class Parser {
 	
 	
@@ -15,29 +14,17 @@ public class Parser {
 	private String filePath;
 	
 	public Parser(String fPath) {
-		
-	
 		contents = new ArrayList<String>();
 		filePath = fPath;
-
-			
 	}
-	
 
-	
-	public void addString(String s){
-		
-		contents.add(s);
-				
+	public void addString(String s){	
+		contents.add(s);			
 	}
-	
 	
 	public ArrayList<String> getContents(){	return contents;}
 	
-	
-	
 	public ArrayList<String> loadRecords() throws IOException  {
-		
 		
 		FileInputStream fin = null;
 		
@@ -51,12 +38,8 @@ public class Parser {
 
 			 scan.close();
 			 
-		}catch (FileNotFoundException e) {
-			
-			
+		}catch (FileNotFoundException e) {	
 			System.err.println(e.getMessage());
-				
-		
 		}finally {
 			
 			if (fin != null) {
@@ -64,35 +47,24 @@ public class Parser {
 				System.out.println("Closing input stream...");
 				fin.close();
 				
-			}else {
-				
+			}else {	
 				System.err.println("Input stream not open.");
 				throw new FileNotFoundException();
-				
 			}
-			
 		}
 		
 		showDetails();
 		return contents;
 	}
 	
-	
 	private void showDetails() {
 		
 		if (!contents.isEmpty()) {
-		
 			System.out.println(String.valueOf(getNumOfRecordsLoaded())+" records have been processed from "+filePath+".");
-			
-			
 		}else
 			
 			System.out.println("The input file is empty!");
-		
 	}
 	
 	private int getNumOfRecordsLoaded() {return contents.size();}
-	
-
-
 }

@@ -23,9 +23,6 @@ public class Person{
 		actorRankings = new HashMap<String,String>();
 	}
 
-	
-	
-	
 	public void addMovie(Movie m) {movies.add(m);}
 
 	public void addMovieId(String id) {movieIds.add(id);}
@@ -34,15 +31,11 @@ public class Person{
 	
 	public String getPersonName() {
 		
-	if (personName == null)
-		return "Undefined";
-		
-	return personName;
-		
-	
-	}
-	
-	
+		if (personName == null) {
+			return "Undefined";
+		}
+		return personName;
+	}	
 	
 	public ArrayList<Movie> getMovies() {return movies;}
 
@@ -61,11 +54,6 @@ public class Person{
 			desc.add("Title: "+ m.getMovieTitle() + "( Ranking: "+ getRankingForMovie(m.getMovieId()) +" )");
 			
 		}
-		return desc;
-		
-		
-		
+		return desc;	
 	}
-
-
 }
