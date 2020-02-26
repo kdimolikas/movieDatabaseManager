@@ -10,7 +10,7 @@ import dataModel.Genre;
 import dataModel.Location;
 import dataModel.Movie;
 import dataModel.Person;
-import dataModel.TagsRatings;
+
 
 /**
  * Used by {@link applicationManager.LoaderManager} for loading functions,
@@ -20,14 +20,11 @@ import dataModel.TagsRatings;
  */
 public interface ILoaderManager {
 	
-	int loadTagsRatings(int option);
 	TreeMap<String, Movie> getMovies();
 	TreeMap<String, Genre> getGenres();
 	TreeMap<String, Person> getActors();
 	TreeMap<String, Person> getDirectors();
 	TreeMap<String, Country> getCountries();
-	TreeMap<String, TagsRatings> getTags();
-	TreeMap<String, TagsRatings> getRatings();
 	TreeMap<String, Location> getLocations();
 	HashMap<String,Integer> getFileInfo();
 	int loadAllData() throws IOException;

@@ -1,16 +1,14 @@
 package dataLoad;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used by {@link search.SearchEngine} to provide answers to users' questions.
- * @since 2017-12-15
+ * @since 2017-12-15|revised 2020-02-18
  * @version 1.0
- * 
  */
-
 public interface IDataProvider {
-	
 	public abstract ArrayList<String> getDetailedDescription(String key);
 	public abstract String getMovieTitleWithId(String id);
 	public abstract String getMovieTitleWithTitle(String title);
@@ -23,5 +21,9 @@ public interface IDataProvider {
 	public abstract ArrayList<String> getMovieRatings(String movieId);
 	public abstract String getMovieIdWithTitle(String title);
 	public abstract int getItemsNum();
-
+	public abstract String getMoviePicUrl(String movieTitle);
+	public abstract List<String> getGenres();
+	public abstract Iterable<String> getCountries();
+	public abstract List<String> getActors();
+	public abstract Iterable<String> getDirectors();
 }
