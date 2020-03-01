@@ -13,7 +13,7 @@ Users can perform the following actions:
 
 <img src="/resources/images/loadData.png" alt="Load data">
 
-* Search a movie by it's name
+* Search a movie by it's title
 
 <img src="/resources/images/searchByName.png" alt="Search a movie">
 
