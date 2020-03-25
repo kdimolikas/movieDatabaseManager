@@ -31,7 +31,8 @@ public class Gui extends Application {
 	
 	 private Stage primaryStage;
 	 private BorderPane rootLayout;
-	 private SearchOverviewController searchController;
+	 @SuppressWarnings("unused")
+	private SearchOverviewController searchController;
 	 private LoadOverviewController loadController;
 	 private GuiController guiController;
 	
@@ -53,7 +54,7 @@ public class Gui extends Application {
 		try {		
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApplication.class.getResource("controller/RootLayout.fxml"));
+			loader.setLocation(Gui.class.getResource("controller/RootLayout.fxml"));
 				
 			rootLayout = (BorderPane) loader.load();
 			guiController = loader.getController();
@@ -85,7 +86,7 @@ public class Gui extends Application {
 	public LoadOverviewController createLoadController() {
 		
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApplication.class.getResource("controller/LoadOverview.fxml"));
+		loader.setLocation(Gui.class.getResource("controller/LoadOverview.fxml"));
 		
 		try {
 			
@@ -112,7 +113,7 @@ public class Gui extends Application {
 	public SearchOverviewController createSearchController() {
 		
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(MainApplication.class.getResource("controller/SearchOverview.fxml"));
+		loader.setLocation(Gui.class.getResource("controller/SearchOverview.fxml"));
 		
 		try {
 			
@@ -130,18 +131,18 @@ public class Gui extends Application {
 	}
 	
 	public void showSearchOverview() {
-		searchController = createSearchController();	
+		this.searchController = createSearchController();	
 	}
 	
-	public void handleSearch() {
-		this.showSearchOverview();
-		searchController.handleSearch();		
-	}
+//	public void handleSearch() {
+//		this.showSearchOverview();
+//		//searchController.handleSearch();		
+//	}
 	
-	public void handleAdvancedSearch() {
-		this.showSearchOverview();
-		searchController.handAdvancedleSearch();
-	}
+//	public void handleAdvancedSearch() {
+//		this.showSearchOverview();
+//		//searchController.handleAdvancedSearch();
+//	}
 	
 	/**
 	 * Returns the main stage.

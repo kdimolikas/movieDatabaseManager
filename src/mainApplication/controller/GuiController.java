@@ -62,6 +62,7 @@ public class GuiController {
 		 
 		 desc.setText(INTRO);
 		 desc.setWrapText(true);
+		 desc.editableProperty().set(false);
 	 }
 	 
 	 @FXML

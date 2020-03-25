@@ -1,6 +1,5 @@
 package mainApplication.controller;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -8,31 +7,37 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import java.util.ArrayList;
-
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
+
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.event.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -51,7 +56,7 @@ import shapes.Sizes;
 /**
  * Controls {@link SearchOverview.fxml}.
  * @author KD
- * @since 2019-11-19
+ * @since 2019-11-19 | revised on 2020-02-25
  * @version 1.0.0
  */
 public class SearchOverviewController {
@@ -75,38 +80,61 @@ public class SearchOverviewController {
 
 	@FXML
 	private Label searchTitle;
-
-	@FXML
-	private Label searchCriterion;
-	
-	@FXML
-	private Label searchCriterion2;
 	
 	@FXML
 	private ImageView moviePic = new ImageView();
 	
 	@FXML
-	private Menu criteriaMenu;
+	private HBox filters;
 	
 	@FXML
-	private MenuButton menuBtn;
+	private ComboBox<String> actors;
+	
+	private ObservableList<String> initialActorList;
+
+	private ObservableList<String> filteredActorList;
+	
+	@FXML
+	private ComboBox<String> directors;
+	
+	private ObservableList<String> initialDirectorList;
+
+	private ObservableList<String> filteredDirectorList;
+	
+	@FXML
+	private ComboBox<String> genres;
+	
+	@FXML
+	private ComboBox<String> countries;
 	
 	@FXML
 	private HBox radioBox;
 	
 	@FXML
-	private RadioButton idBtn;
+	private RadioButton idRadio;
 
 	@FXML
-	private RadioButton nameBtn;
+	private RadioButton nameRadio;
+	
+	@FXML
+	private RadioButton actorRadio;
+	
+	@FXML
+	private RadioButton directorRadio;
+	
+	@FXML
+	private RadioButton countryRadio;
+	
+	@FXML
+	private RadioButton genreRadio;
+	
+	@FXML
+	private final ToggleGroup radioGroup = new ToggleGroup();
 	
 	@FXML
 	private ListView<String> answerView  = new ListView<String>();
 	
 	private List<String> answer;
-	
-	@FXML
-	private Label statusLabel;
 	
 	@FXML
 	private HBox ratingsBox;
@@ -117,10 +145,10 @@ public class SearchOverviewController {
 	
 	@FXML
 	private void initialize() {
-
 		sFactory = new SearchEngineFactory();
 		sEngine = sFactory.createSearchEngine(1);
 		answer = new ArrayList<String>();
+		
 		radioBox.setVisible(true);
 		moviePic.setImage(new Image("file:resources/images/noimage.jpg"));
 		this.answerView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -129,54 +157,202 @@ public class SearchOverviewController {
 		renderer = new ShapeRenderer(500, 50, 200, 0);
 		renderer.setScale(Sizes.SMALL);
 		
+		idRadio.setToggleGroup(radioGroup);
+		nameRadio.setToggleGroup(radioGroup);
+		actorRadio.setToggleGroup(radioGroup);
+		directorRadio.setToggleGroup(radioGroup);
+		countryRadio.setToggleGroup(radioGroup);
+		genreRadio.setToggleGroup(radioGroup);
+		
+		getActors();
+		initialActorList = FXCollections.observableArrayList(actors.getItems());
+		
+		getDirectors();
+		initialDirectorList = FXCollections.observableArrayList(directors.getItems());
+		
+		getGenres();
+		
+		getCountries();
+		
+		actors.getEditor().textProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				Predicate<String> startsWith = i -> i.toLowerCase().startsWith(newValue.toLowerCase());	
+				Platform.runLater(() -> {
+					filteredActorList = initialActorList.filtered(startsWith);
+					actors.getItems().setAll(filteredActorList);
+					actors.show();
+					});			
+			}
+			
+		});
+		
+		directors.getEditor().textProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				Predicate<String> startsWith = i -> i.toLowerCase().startsWith(observable.getValue().toLowerCase());	
+				Platform.runLater(() -> {
+					filteredDirectorList = initialDirectorList.filtered(startsWith);
+					directors.getItems().setAll(filteredDirectorList);
+					directors.show();
+					});			
+			}
+			
+		});
+		
+		actors.valueProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue!=null && !newValue.equalsIgnoreCase(actors.getPromptText())) {
+					submitQuery(newValue);
+				}
+			}
+			
+		});
+		
+		directors.valueProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue!=null && !newValue.equalsIgnoreCase(directors.getPromptText())) {
+					submitQuery(newValue);
+				}
+			}
+			
+		});
+		
+		countries.valueProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue!=null) {	
+					submitQuery(newValue);
+				}
+			}
+			
+		});
+		
+		genres.valueProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue!=null) {	
+					submitQuery(newValue);
+				}
+			}
+			
+		});
+		
+		
+		radioGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+				if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("idRadio")) {
+					clearFilters();
+					disableFilters();
+					criterion = 1;
+					sEngine = sFactory.createSearchEngine(criterion);
+					searchKey.setDisable(false);
+				}
+				else if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("nameRadio")) {
+					clearFilters();
+					disableFilters();
+					criterion = 2;
+					sEngine = sFactory.createSearchEngine(criterion);
+					searchKey.setDisable(false);
+				}
+				else if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("actorRadio")) {
+					clearFilters();
+					disableFilters();
+					actors.setDisable(false);
+					sEngine = sFactory.createSearchEngine("Actor");
+				}
+				else if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("directorRadio")) {
+					clearFilters();
+					disableFilters();
+					directors.setDisable(false);
+					sEngine = sFactory.createSearchEngine("Director");
+				}
+				else if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("countryRadio")) {
+					clearFilters();
+					disableFilters();
+					countries.setDisable(false);
+					sEngine = sFactory.createSearchEngine("Country");
+				}
+				else if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("genreRadio")) {
+					clearFilters();
+					disableFilters();
+					genres.setDisable(false);
+					sEngine = sFactory.createSearchEngine("Genre");
+				}
+			}
+			
+		});
+		
 		//track the image's error property.        
 		moviePic.getImage().errorProperty().addListener(new ChangeListener<Boolean>() {
 			@Override 
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean imageError) {
 				if (imageError) {
-					statusLabel.setText("Sorry, there was an error while loading image: ");
-					statusLabel.setStyle("-fx-text-fill: firebrick;");
 					moviePic.setImage(new Image(NO_IMAGE));
 				}
 			}
 		});
 
-		menuBtn.getItems().forEach(i->i.setOnAction(new EventHandler<ActionEvent>() {			 
-			public void handle(ActionEvent e) {				
-				searchCriterion.setText(i.getText());
-				searchCriterion2.setText("");				
-			}		 
-		}));
-
-		criteriaMenu.getItems().forEach(i->i.setOnAction(new EventHandler<ActionEvent>() {			 
-			public void handle(ActionEvent e) {			
-				searchCriterion2.setText(i.getText());
-				radioBox.setVisible(false);				
-				if (i.getId().equals("country"))
-					sEngine = sFactory.createSearchEngine("Country");
-				else if (i.getId().equals("genre")) 
-					sEngine = sFactory.createSearchEngine("Genre");
-				else if (i.getId().equals("director")) 
-					sEngine = sFactory.createSearchEngine("Director");
-				else if (i.getId().equals("actor")) 
-					sEngine = sFactory.createSearchEngine("Actor");	
-			}		 
-		}));
-
-		idBtn.setOnAction(new EventHandler<ActionEvent>() {		 
-			public void handle(ActionEvent e) {				 
-				criterion=1;
-				sEngine = sFactory.createSearchEngine(criterion);
-			}			 
-		} );
-
-		nameBtn.setOnAction(new EventHandler<ActionEvent>() {			 
-			public void handle(ActionEvent e) {				 
-				criterion=2;
-				sEngine = sFactory.createSearchEngine(criterion);
-			}		 
-		} );
-
+		answerView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				String selectedItem = answerView.getSelectionModel().getSelectedItem();
+				if (selectedItem.startsWith("Title:") && selectedItem!=null){
+					String movieTitle = selectedItem.split(":")[1];
+					String picUrl = sEngine.getMoviePicUrl(movieTitle);
+					if (!picUrl.isEmpty()) {
+						updateImage(sEngine.getMoviePicUrl(movieTitle));
+					}
+				}	
+			}
+		});
+	}
+	
+	private void disableFilters() {
+		actors.setDisable(true);
+		directors.setDisable(true);
+		countries.setDisable(true);
+		genres.setDisable(true);
+		searchKey.setDisable(true);
+	}
+	
+	private void clearFilters() {
+		actors.getSelectionModel().clearSelection();
+		actors.setValue(actors.getPromptText());
+		directors.getSelectionModel().clearSelection();
+		directors.setValue(directors.getPromptText());
+		countries.getSelectionModel().clearSelection();
+		genres.getSelectionModel().clearSelection();
+		searchKey.clear();
+	}
+	
+	private void getActors() {
+		Set<String> actorsSet = sEngine.getActors();
+		actors.getItems().addAll(actorsSet);
+	}
+	
+	private void getDirectors() {
+		Set<String> directorsSet = sEngine.getDirectors();
+		directors.getItems().addAll(directorsSet);
+	}
+	
+	private void getGenres() {
+		Set<String> genresSet = sEngine.getGenres();
+		genres.getItems().addAll(genresSet);
+	}	
+	
+	private void getCountries() {
+		Set<String> cSet = sEngine.getCountries();
+		countries.getItems().addAll(cSet);
 	}
 	
 	/**
@@ -184,7 +360,6 @@ public class SearchOverviewController {
 	 * @param numOfStars - the number of rating stars
 	 */
 	private void drawRatingStars(int numOfStars) {
-		
 	
 		this.audienceRatingsCanvas.getGraphicsContext2D().clearRect(0, 0,
 																	this.audienceRatingsCanvas.getWidth(),
@@ -225,12 +400,12 @@ public class SearchOverviewController {
 
 					}
 					else if (item.startsWith("Cast")) {
-					 Text txt = new Text();
-					txt.wrappingWidthProperty().bind(answerView.widthProperty().subtract(10));
-					txt.setText(item);
-					setPrefWidth(0);
-					setGraphic(txt);
-					 }
+						Text txt = new Text();
+						txt.wrappingWidthProperty().bind(answerView.widthProperty().subtract(10));
+						txt.setText(item);
+						setPrefWidth(0);
+						setGraphic(txt);
+					}
 					else {
 
 						setTextFill(javafx.scene.paint.Paint.valueOf(Color.BLACK.toString()));
@@ -243,33 +418,20 @@ public class SearchOverviewController {
 			};
 		});
 	}
-	 
-	public void selectionChanged(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		
-		String lastItem = (newValue==null)?"No selection":newValue;
-		
-		if (lastItem.startsWith("Title:"))
-			answerView.getSelectionModel().select(lastItem);
-			 
-		System.out.println(newValue.split(":")[1]);
-				
-	}
-	
+
 	public int submitQuery(String data) {
 		
 		String searchTitle;
 		String picUrl="";
 		Pattern picPattern = Pattern.compile("(jpg|png)$");
 		Matcher m;
-
 		
 		if (items.size() > 0)
 			clear();
 				
 		answer = sEngine.searchFor(data);
 		
-		if (!answer.isEmpty()) {
-			
+		if (!answer.isEmpty()) {	
 			searchTitle = sEngine.getTitleOfSearch();
 			if (answer.size()>1) {
 				m = picPattern.matcher(answer.get(1));
@@ -289,11 +451,10 @@ public class SearchOverviewController {
 			this.answerView.refresh();
 						
 			updateImage(picUrl);
-		
-			statusLabel.setText("Number of items retrieved: "+sEngine.getItemsNum());	
 			
 			//search for movie(either by title or id)
-			if (radioBox.isVisible()) {
+			if (((RadioButton)radioGroup.getSelectedToggle()).getId().equals("idRadio") || 
+					((RadioButton)radioGroup.getSelectedToggle()).getId().equals("nameRadio")) {
 				this.ratingsBox.setVisible(true);
 				double ratings = Double.parseDouble(answer.get(6).split(":")[1]);
 				this.drawRatingStars((int)Math.round(ratings));
@@ -334,9 +495,9 @@ public class SearchOverviewController {
 	
 	
 	/**
-	 * 
-	 * @param picUrl
-	 * @return
+	 * Attempts to download the image of the given url
+	 * @param picUrl image url
+	 * @return an instance of {@link javafx.scene.image.Image} class 
 	 * @throws MalformedURLException
 	 */
 	private Image getMovieImage(String picUrl) throws MalformedURLException {
@@ -367,8 +528,8 @@ public class SearchOverviewController {
 	
 	/**
 	 * Creates a task for loading images.
-	 * @param url
-	 * @return
+	 * @param url image url
+	 * @return an instance of {@link javafx.concurrent.Task} class 
 	 */
 	private Task<Image> createLoadImageTaskWorker(URL url) {
 		
@@ -415,7 +576,7 @@ public class SearchOverviewController {
 	
 	/**
 	 * Converting an http url to https
-	 * @param url
+	 * @param url the initial url
 	 * @return modified url
 	 */
 	private String convertUrl(String url) {	
@@ -434,30 +595,11 @@ public class SearchOverviewController {
 			this.submitQuery(this.searchKey.textProperty().getValue());
 	}
 	
-	@FXML
-	public void handleSearch() {
-		menuBtn.setVisible(false);
-		radioBox.setVisible(true);	
-	}
-		
-	public void handAdvancedleSearch() {
-		menuBtn.setVisible(true);
-		radioBox.setVisible(false);
-	}
-	
 	private void clear() {	
 		this.answerView.getItems().clear();
 		this.answer.clear();
 		this.items.clear();
 		this.searchTitle.setText("");
-	}
-	
-	@FXML
-	public void setSearchCriterion() {	
-		menuBtn.getItems().forEach(i->i.setOnAction(e->
-		{
-			searchCriterion.setText(i.getText());
-		}));
 	}
 
 	public void setMainApp(Gui mainApp) {		
