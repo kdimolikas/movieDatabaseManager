@@ -32,12 +32,12 @@ public class Gui extends Application {
 	 private Stage primaryStage;
 	 private BorderPane rootLayout;
 	 @SuppressWarnings("unused")
-	private SearchOverviewController searchController;
+	 private SearchOverviewController searchController;
 	 private LoadOverviewController loadController;
 	 private GuiController guiController;
 	
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Movie Archives");
@@ -76,8 +76,7 @@ public class Gui extends Application {
 		
 		guiController.setMainApp(this);		
 	}
-	
-	
+
 	public void showLoadOverview() {
 		
 		this.loadController = createLoadController();
@@ -133,16 +132,6 @@ public class Gui extends Application {
 	public void showSearchOverview() {
 		this.searchController = createSearchController();	
 	}
-	
-//	public void handleSearch() {
-//		this.showSearchOverview();
-//		//searchController.handleSearch();		
-//	}
-	
-//	public void handleAdvancedSearch() {
-//		this.showSearchOverview();
-//		//searchController.handleAdvancedSearch();
-//	}
 	
 	/**
 	 * Returns the main stage.

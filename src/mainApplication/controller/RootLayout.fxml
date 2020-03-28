@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -11,9 +10,6 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.image.ImageView?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="430.0" prefWidth="600.0" 
@@ -26,31 +22,30 @@
       <Cursor fx:constant="DEFAULT" />
    </cursor>
    <top>
-      <MenuBar fx:id="menu" visible="true" BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="true" text="Home">
-            <items>
-                  <MenuItem id="home_item" mnemonicParsing="false" onAction="#handleHomeMenuItem" text="Home" />
-              	  <MenuItem mnemonicParsing="false" onAction="#handleCloseApp" text="Exit" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="true" text="Load" visible="true">
-             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleShowLoader" text="Show" />
-                  <MenuItem fx:id="loadMenuItem" disable="true" mnemonicParsing="false" onAction="#handleLoadAllData" text="Movies" />
-                  <MenuItem disable="true" mnemonicParsing="false" text="Tags/Ratings" />
-             </items>
-          </Menu>
-          <Menu mnemonicParsing="true" text="Search" visible="true">
+       <MenuBar fx:id = "menu" BorderPane.alignment = "CENTER">
+           <padding>
+               <Insets left = "10.0"/>
+           </padding>
+           <Menu mnemonicParsing = "true" text = "Home">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleSubmitQuery" text="Movies" />
+                   <MenuItem id = "home_item" mnemonicParsing = "false" onAction = "#handleHomeMenuItem" text = "Home"/>
+                   <MenuItem mnemonicParsing = "false" onAction = "#handleCloseApp" text = "Exit"/>
                </items>
-          </Menu>
-        </menus>
-         <padding>
-            <Insets left="10.0" />
-         </padding>
-      </MenuBar>
+           </Menu>
+           <Menu mnemonicParsing = "true" text = "Load" visible = "true">
+               <items>
+                   <MenuItem mnemonicParsing = "false" onAction = "#handleShowLoader" text = "Show"/>
+                   <MenuItem fx:id = "loadMenuItem" disable = "true" mnemonicParsing = "false"
+                             onAction = "#handleLoadAllData" text = "Movies"/>
+                   <MenuItem disable = "true" mnemonicParsing = "false" text = "Tags/Ratings"/>
+               </items>
+           </Menu>
+           <Menu mnemonicParsing = "true" text = "Search" visible = "true">
+                <items>
+                    <MenuItem mnemonicParsing = "false" onAction = "#handleSubmitQuery" text = "Movies"/>
+                </items>
+           </Menu>
+       </MenuBar>
    </top>
    <center>
       <SplitPane id="split" dividerPositions="0.5" minHeight="-Infinity" prefWidth="600.0" BorderPane.alignment="CENTER">
