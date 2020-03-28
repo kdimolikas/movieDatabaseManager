@@ -1,6 +1,9 @@
 *.class
 *.[oa]
-bin/.*
 *.prefs
 *.fxbuild
 /.classpath
+bin/**
+/*.iml
+/.idea/
+**/*.bak
